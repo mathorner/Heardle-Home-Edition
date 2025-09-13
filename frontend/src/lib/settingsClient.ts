@@ -20,3 +20,10 @@ export async function saveLibraryPath(path: string, baseUrl: string = apiBase): 
   return json as SaveLibraryPathResult;
 }
 
+export async function getLibraryPath(baseUrl: string = apiBase): Promise<string | null> {
+  const res = await fetch(`${baseUrl}/settings/library-path`);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(res.statusText);
+  const json = (await res.json()) as { path?: string };
+  return json.path ?? null;
+}

@@ -2,6 +2,15 @@ public static class SettingsEndpoints
 {
     public static IEndpointRouteBuilder MapSettingsEndpoints(this IEndpointRouteBuilder app)
     {
+        app.MapGet("/settings/library-path", async (ISettingsService service, CancellationToken ct) =>
+        {
+            var path = await service.LoadAsync(ct);
+            return path is null
+                ? Results.NotFound()
+                : Results.Ok(new { path });
+        })
+        .WithName("GetLibraryPath");
+
         app.MapPost("/settings/library-path", async (
             LibraryPathRequest req,
             ISettingsService service,
@@ -33,4 +42,3 @@ public static class SettingsEndpoints
 
 public record LibraryPathRequest(string Path);
 public record ErrorResponse(bool Saved, string Code, string Message);
-

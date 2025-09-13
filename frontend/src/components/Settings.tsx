@@ -1,11 +1,30 @@
-import { useState } from 'react';
-import { saveLibraryPath } from '../lib/settingsClient';
+import { useEffect, useState } from 'react';
+import { saveLibraryPath, getLibraryPath } from '../lib/settingsClient';
 
 export default function Settings() {
   const [path, setPath] = useState('');
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [currentPath, setCurrentPath] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    getLibraryPath()
+      .then((p) => {
+        if (!mounted) return;
+        if (p) {
+          setPath(p);
+          setCurrentPath(p);
+        }
+      })
+      .catch(() => {
+        /* ignore; absent or error will be handled on save */
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -16,6 +35,7 @@ export default function Settings() {
       const result = await saveLibraryPath(path);
       if (result.saved) {
         setSuccess(`Saved: ${result.path}`);
+        setCurrentPath(result.path ?? path);
       } else {
         setError(result.message ?? 'Failed to save');
       }
@@ -29,6 +49,7 @@ export default function Settings() {
   return (
     <section>
       <h2>Settings</h2>
+      {currentPath && <p>Current path: {currentPath}</p>}
       <form onSubmit={onSubmit}>
         <label htmlFor="libraryPath">Library Path</label>
         <input

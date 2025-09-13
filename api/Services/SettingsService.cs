@@ -6,6 +6,7 @@ public interface ISettingsService
 {
     (bool Ok, string? Code, string? Message, string? NormalizedPath) ValidatePath(string? input);
     Task SaveAsync(string path, CancellationToken ct = default);
+    Task<string?> LoadAsync(CancellationToken ct = default);
 }
 
 public class SettingsService : ISettingsService
@@ -96,4 +97,22 @@ public class SettingsService : ISettingsService
     }
 
     private record SettingsFile([property: JsonPropertyName("libraryPath")] string LibraryPath);
+
+    public async Task<string?> LoadAsync(CancellationToken ct = default)
+    {
+        var configDir = Path.Combine(_env.ContentRootPath, "config");
+        var settingsPath = Path.Combine(configDir, "settings.json");
+        if (!File.Exists(settingsPath)) return null;
+        try
+        {
+            await using var fs = File.OpenRead(settingsPath);
+            var settings = await JsonSerializer.DeserializeAsync<SettingsFile>(fs, JsonOptions, ct);
+            return settings?.LibraryPath;
+        }
+        catch
+        {
+            // Corrupt file or invalid json; treat as missing
+            return null;
+        }
+    }
 }
