@@ -21,15 +21,24 @@ Personalized Heardle-style music guessing game that uses your own MP3 library. P
 
 See full plan: `Planning/Product-Plan.md`
 
-## Local Development (after Iteration 1 is implemented)
-- Backend
-  - Run .NET Minimal API (dev): `dotnet run`
+## Local Development
+- Backend API (port 5158 by default)
+  - `cd api && dotnet run`
   - Endpoint: `GET /health` → `{ "status": "ok" }`
-  - CORS: allow local frontend origin in development
-- Frontend
-  - Run: `npm run dev` (Vite)
-  - Environment: `VITE_API_BASE_URL` (or Vite proxy to API)
-  - Home page fetches and displays `/health`
+  - CORS allows `http://localhost:5173`
+- Frontend (port 5173)
+  - `cd frontend && npm run dev`
+  - Uses Vite proxy to `/api` or `VITE_API_BASE_URL`
+  - Home page fetches and displays API health
+- Tests
+  - Backend: `dotnet test`
+  - Frontend: `cd frontend && npm test -- --run`
+
+### Ports and Proxy
+- Vite dev server runs at `http://localhost:5173`.
+- API (Development) runs at `http://localhost:5158` (see `api/Properties/launchSettings.json`).
+- Vite proxy forwards `/api/*` → `http://localhost:5158` (see `frontend/vite.config.ts`).
+- Alternative: set `frontend/.env` with `VITE_API_BASE_URL=http://localhost:5158` and call the API directly (CORS already permits `http://localhost:5173`).
 
 ## Mobile UX Baseline
 - Viewport meta configured for mobile
@@ -50,4 +59,3 @@ See full plan: `Planning/Product-Plan.md`
 
 ## License
 TBD
-
