@@ -64,3 +64,5 @@ dist/
 frontend/.env
 frontend/.env.*
 !frontend/.env.example
+api/config/
+!api/config/.gitkeep

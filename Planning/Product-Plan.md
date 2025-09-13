@@ -132,9 +132,9 @@ Heardle Home Edition is a music guessing game that uses the player's personal mu
 #### Iteration 2: Settings: Library Path Input
 - **Goal**: Let user enter a folder path; store it
 - **Deliverables**: 
-  - [ ] POST `/api/settings/library-path`
-  - [ ] Server validates read access
-  - [ ] Persist to `config/settings.json`
+  - [x] POST `/api/settings/library-path`
+  - [x] Server validates read access
+  - [x] Persist to `config/settings.json`
 - **Acceptance**: Valid path saves; invalid path returns clear error message
 
 #### Iteration 3: Library Scan (Backend)

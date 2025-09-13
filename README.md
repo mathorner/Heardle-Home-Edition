@@ -40,6 +40,13 @@ See full plan: `Planning/Product-Plan.md`
 - Vite proxy forwards `/api/*` → `http://localhost:5158` (see `frontend/vite.config.ts`).
 - Alternative: set `frontend/.env` with `VITE_API_BASE_URL=http://localhost:5158` and call the API directly (CORS already permits `http://localhost:5173`).
 
+## Settings: Library Path (Iteration 2)
+- UI: Settings page to enter your music library folder path and save it
+- Endpoint: `POST /settings/library-path` (dev via `/api/settings/library-path`)
+- Persisted to: `api/config/settings.json` on the server (not committed)
+- Validations: absolute path, exists, readable by the server process
+- Errors: returns a 400 with a code and message for invalid paths
+
 ## Mobile UX Baseline
 - Viewport meta configured for mobile
 - Responsive layout (phone 320–414, tablet 768–1024)

@@ -20,7 +20,7 @@ describe('apiClient.getHealth', () => {
 
     const result = await getHealth();
     expect(result).toBe('ok');
-    expect(fetchMock).toHaveBeenCalledWith('/api/health');
+    expect(fetchMock).toHaveBeenCalledWith('/api/health', { signal: undefined });
   });
 
   it('uses provided baseUrl when passed', async () => {
@@ -30,8 +30,8 @@ describe('apiClient.getHealth', () => {
     });
     vi.stubGlobal('fetch', fetchMock as unknown as typeof fetch);
 
-    await getHealth('http://localhost:5158');
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:5158/health');
+    await getHealth({ baseUrl: 'http://localhost:5158' });
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:5158/health', { signal: undefined });
   });
 
   it('throws when response is not ok', async () => {
@@ -41,4 +41,3 @@ describe('apiClient.getHealth', () => {
     await expect(getHealth()).rejects.toThrow('Bad Request');
   });
 });
-

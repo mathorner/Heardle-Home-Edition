@@ -6,9 +6,15 @@ export default function Home() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    getHealth()
+    const ac = new AbortController();
+    getHealth({ signal: ac.signal })
       .then(setStatus)
-      .catch(() => setError(true));
+      .catch((err: unknown) => {
+        // Ignore aborts (React 18 StrictMode runs effects twice in dev)
+        if (err instanceof DOMException && err.name === 'AbortError') return;
+        setError(true);
+      });
+    return () => ac.abort();
   }, []);
 
   return (
@@ -17,7 +23,7 @@ export default function Home() {
       {error ? (
         <p role="alert">API error</p>
       ) : (
-        <p>API status: {status}</p>
+        <p aria-live="polite">API status: {status}</p>
       )}
     </main>
   );

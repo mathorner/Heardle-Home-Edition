@@ -13,6 +13,9 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod());
 });
 
+// Services
+builder.Services.AddSingleton<ISettingsService, SettingsService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -26,6 +29,9 @@ else
 }
 
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+
+// Endpoints
+app.MapSettingsEndpoints();
 
 app.Run();
 

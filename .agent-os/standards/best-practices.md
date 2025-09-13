@@ -17,6 +17,7 @@ ELSE:
 - Implement code in the fewest lines possible
 - Avoid over-engineering solutions
 - Choose straightforward approaches over clever ones
+- Create git feature branches for each new iteration
 
 ### Optimize for Readability
 - Prioritize code clarity over micro-optimizations
