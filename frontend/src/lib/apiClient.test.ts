@@ -1,27 +1,44 @@
-import { vi, describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getHealth } from './apiClient';
 
-describe('apiClient', () => {
-  it('resolves health status', async () => {
+declare global {
+  // eslint-disable-next-line no-var
+  var fetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<any>;
+}
+
+describe('apiClient.getHealth', () => {
+  beforeEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('calls /api/health by default and returns status', async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve({ status: 'ok' })
+      json: async () => ({ status: 'ok' })
     });
-    vi.stubGlobal('fetch', fetchMock as any);
+    vi.stubGlobal('fetch', fetchMock as unknown as typeof fetch);
 
-    const status = await getHealth('http://api');
-    expect(fetchMock).toHaveBeenCalledWith('http://api/health');
-    expect(status).toBe('ok');
-
-    vi.unstubAllGlobals();
+    const result = await getHealth();
+    expect(result).toBe('ok');
+    expect(fetchMock).toHaveBeenCalledWith('/api/health');
   });
 
-  it('throws on error response', async () => {
-    const fetchMock = vi.fn().mockResolvedValue({ ok: false, statusText: 'fail' });
-    vi.stubGlobal('fetch', fetchMock as any);
+  it('uses provided baseUrl when passed', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ status: 'ok' })
+    });
+    vi.stubGlobal('fetch', fetchMock as unknown as typeof fetch);
 
-    await expect(getHealth('http://api')).rejects.toThrow('fail');
+    await getHealth('http://localhost:5158');
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:5158/health');
+  });
 
-    vi.unstubAllGlobals();
+  it('throws when response is not ok', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: false, statusText: 'Bad Request' });
+    vi.stubGlobal('fetch', fetchMock as unknown as typeof fetch);
+
+    await expect(getHealth()).rejects.toThrow('Bad Request');
   });
 });
+

@@ -122,11 +122,11 @@ Heardle Home Edition is a music guessing game that uses the player's personal mu
 #### Iteration 1: Project Scaffolding
 - **Goal**: Create runnable backend and frontend shells
 - **Deliverables**: 
-  - [ ] .NET 9 Minimal API with `/health`
-  - [ ] Vite React TS app with `/` page
-  - [ ] CORS enabled
-  - [ ] Mobile viewport meta
-  - [ ] Base responsive layout and design tokens
+  - [x] .NET 9 Minimal API with `/health`
+  - [x] Vite React TS app with `/` page
+  - [x] CORS enabled
+  - [x] Mobile viewport meta
+  - [x] Base responsive layout and design tokens
 - **Acceptance**: Both apps run locally; frontend can hit `/health` and display status; layout adapts cleanly at phone and tablet widths
 
 #### Iteration 2: Settings: Library Path Input

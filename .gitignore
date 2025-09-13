@@ -56,3 +56,11 @@ nunit-*.xml
 # Node
 node_modules/
 dist/
+
+# Environment files
+.env
+.env.*
+!.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example

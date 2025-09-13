@@ -15,7 +15,15 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseCors();
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors();
+}
+else
+{
+    app.UseHsts();
+    app.UseHttpsRedirection();
+}
 
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
