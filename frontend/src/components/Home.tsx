@@ -5,6 +5,7 @@ export default function Home() {
   const [status, setStatus] = useState<string>('');
   const [error, setError] = useState(false);
 
+  // Fetch /health on mount; ignore AbortError triggered by React 18 StrictMode double-invoke
   useEffect(() => {
     const ac = new AbortController();
     getHealth({ signal: ac.signal })

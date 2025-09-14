@@ -1,10 +1,11 @@
+using Api.LibraryScan;
 var builder = WebApplication.CreateBuilder(args);
 
 // Logging configuration
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
-// CORS configuration
+// CORS configuration (Development only at runtime below)
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -15,9 +16,13 @@ builder.Services.AddCors(options =>
 
 // Services
 builder.Services.AddSingleton<ISettingsService, SettingsService>();
+builder.Services.AddSingleton<ITrackMetadataExtractor, TagLibMetadataExtractor>();
+builder.Services.AddSingleton<IIndexWriter, JsonIndexWriter>();
+builder.Services.AddSingleton<ILibraryScanService, LibraryScanService>();
 
 var app = builder.Build();
 
+// Enable CORS for local dev; use HSTS+HTTPS redirection elsewhere
 if (app.Environment.IsDevelopment())
 {
     app.UseCors();

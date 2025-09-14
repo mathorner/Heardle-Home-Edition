@@ -7,6 +7,7 @@ export type SaveLibraryPathResult = {
   message?: string;
 };
 
+// Persist the library path via the settings endpoint. Returns a structured result used by the UI.
 export async function saveLibraryPath(path: string, baseUrl: string = apiBase): Promise<SaveLibraryPathResult> {
   const res = await fetch(`${baseUrl}/settings/library-path`, {
     method: 'POST',
@@ -20,6 +21,7 @@ export async function saveLibraryPath(path: string, baseUrl: string = apiBase): 
   return json as SaveLibraryPathResult;
 }
 
+// Retrieve the saved library path (or null when not set yet).
 export async function getLibraryPath(baseUrl: string = apiBase): Promise<string | null> {
   const res = await fetch(`${baseUrl}/settings/library-path`);
   if (res.status === 404) return null;
