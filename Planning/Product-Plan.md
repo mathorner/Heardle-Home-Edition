@@ -140,9 +140,9 @@ Heardle Home Edition is a music guessing game that uses the player's personal mu
 #### Iteration 3: Library Scan (Backend)
 - **Goal**: Scan MP3s and extract metadata
 - **Deliverables**: 
-  - [ ] Scan service
-  - [ ] TagLib# integration
-  - [ ] Write `data/library.json` with `[{ id, title, artist, path }]`
+  - [x] Scan service
+  - [x] TagLib# integration
+  - [x] Write `data/library.json` with `[{ id, title, artist, path }]`
 - **Acceptance**: Scans nested folders; handles large libraries; logs errors but continues
 
 #### Iteration 4: Scan UI + Progress
