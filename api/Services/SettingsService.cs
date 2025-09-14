@@ -2,13 +2,33 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Linq;
 
+/// <summary>
+/// Handles validation and persistence of application settings that live on the server.
+/// For now we only manage <c>libraryPath</c> for the home-edition use case.
+/// </summary>
 public interface ISettingsService
 {
+    /// <summary>
+    /// Validate a user-supplied path. Requires an absolute, existing, and minimally readable directory.
+    /// Returns a normalized absolute path when valid along with an error code/message when invalid.
+    /// </summary>
     (bool Ok, string? Code, string? Message, string? NormalizedPath) ValidatePath(string? input);
+
+    /// <summary>
+    /// Persist the validated library path to <c>config/settings.json</c> using an atomic write.
+    /// </summary>
     Task SaveAsync(string path, CancellationToken ct = default);
+
+    /// <summary>
+    /// Load the saved library path from <c>config/settings.json</c>, or <c>null</c> if not present/invalid.
+    /// </summary>
     Task<string?> LoadAsync(CancellationToken ct = default);
 }
 
+/// <summary>
+/// File-backed settings provider that validates and persists the library path to
+/// {ContentRoot}/config/settings.json using JSON with camelCase keys and atomic writes.
+/// </summary>
 public class SettingsService : ISettingsService
 {
     private readonly IWebHostEnvironment _env;
@@ -34,7 +54,8 @@ public class SettingsService : ISettingsService
         }
 
         var raw = input.Trim();
-        // Reject relative inputs before normalization per spec
+        // Reject relative inputs BEFORE normalization per spec. Calling GetFullPath on a relative
+        // path produces an absolute path which would mask the error and misclassify as NotFound.
         if (!Path.IsPathRooted(raw))
         {
             return (false, "InvalidPath", "Path must be absolute.", null);
@@ -57,7 +78,7 @@ public class SettingsService : ISettingsService
 
         try
         {
-            // Attempt to actually read the directory (minimal touch)
+            // Attempt to actually read the directory (minimal touch) to detect permission issues.
             using var e = Directory.EnumerateFileSystemEntries(fullPath).Take(1).GetEnumerator();
             e.MoveNext();
         }
@@ -82,6 +103,7 @@ public class SettingsService : ISettingsService
         var payload = new SettingsFile(path);
         var json = JsonSerializer.Serialize(payload, JsonOptions);
 
+        // Atomic write: write to a temp file and then replace/move into place
         var tmp = settingsPath + ".tmp";
         await File.WriteAllTextAsync(tmp, json, ct);
         if (File.Exists(settingsPath))
@@ -111,7 +133,7 @@ public class SettingsService : ISettingsService
         }
         catch
         {
-            // Corrupt file or invalid json; treat as missing
+            // Corrupt file or invalid json; treat as missing and let the UI prompt the user again.
             return null;
         }
     }

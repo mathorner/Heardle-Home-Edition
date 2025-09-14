@@ -8,6 +8,7 @@ export default function Settings() {
   const [error, setError] = useState<string | null>(null);
   const [currentPath, setCurrentPath] = useState<string | null>(null);
 
+  // Prefill the input by reading the saved path on mount. Non-fatal if missing.
   useEffect(() => {
     let mounted = true;
     getLibraryPath()

@@ -47,6 +47,12 @@ See full plan: `Planning/Product-Plan.md`
 - Validations: absolute path, exists, readable by the server process
 - Errors: returns a 400 with a code and message for invalid paths
 
+## Library Scan (Iteration 3)
+- Purpose: Index MP3 files under the saved library path
+- Output: `api/data/library.json` — `[ { id, title, artist, path } ]`
+- Behavior: Recursively enumerates `.mp3`, extracts ID3 via TagLib# (fallback to filename `Artist - Title`), skips unreadable/corrupt files, writes output atomically
+- Notes: Triggering endpoints and progress UI come in Iteration 4
+
 ## Mobile UX Baseline
 - Viewport meta configured for mobile
 - Responsive layout (phone 320–414, tablet 768–1024)

@@ -1,14 +1,14 @@
 using System.Net;
 using System.Net.Http.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
+using Api.Tests.Infrastructure;
 
 namespace Api.Tests;
 
-public class LibraryPathEndpointTests : IClassFixture<WebApplicationFactory<Program>>
+public class LibraryPathEndpointTests : IClassFixture<TestWebApplicationFactory>
 {
     private readonly HttpClient _client;
 
-    public LibraryPathEndpointTests(WebApplicationFactory<Program> factory)
+    public LibraryPathEndpointTests(TestWebApplicationFactory factory)
     {
         _client = factory.CreateClient();
     }
@@ -53,4 +53,3 @@ public class LibraryPathEndpointTests : IClassFixture<WebApplicationFactory<Prog
         }
     }
 }
-

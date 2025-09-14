@@ -2,6 +2,9 @@ public static class SettingsEndpoints
 {
     public static IEndpointRouteBuilder MapSettingsEndpoints(this IEndpointRouteBuilder app)
     {
+        // GET /settings/library-path
+        // Returns the currently saved libraryPath if present, or 404 if not configured yet.
+        // This endpoint is used by the Settings UI to prefill the input on load.
         app.MapGet("/settings/library-path", async (ISettingsService service, CancellationToken ct) =>
         {
             var path = await service.LoadAsync(ct);
@@ -11,6 +14,9 @@ public static class SettingsEndpoints
         })
         .WithName("GetLibraryPath");
 
+        // POST /settings/library-path
+        // Validates and persists an absolute, readable directory path.
+        // Fails fast with structured 400 responses (code/message) on invalid inputs.
         app.MapPost("/settings/library-path", async (
             LibraryPathRequest req,
             ISettingsService service,
