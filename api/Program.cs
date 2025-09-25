@@ -1,3 +1,4 @@
+using Api.LibraryIndex;
 using Api.LibraryScan;
 using Api.Endpoints;
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton<ISettingsService, SettingsService>();
 builder.Services.AddSingleton<ITrackMetadataExtractor, TagLibMetadataExtractor>();
 builder.Services.AddSingleton<IIndexWriter, JsonIndexWriter>();
+builder.Services.AddSingleton<ILibraryIndexProvider, LibraryIndexProvider>();
 builder.Services.AddSingleton<ILibraryScanService, LibraryScanService>();
 builder.Services.AddSingleton<IScanManager, ScanManager>();
 
