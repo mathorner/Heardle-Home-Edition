@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { saveLibraryPath, getLibraryPath } from '../lib/settingsClient';
+import ScanPanel from './ScanPanel';
 
 export default function Settings() {
   const [path, setPath] = useState('');
@@ -48,28 +49,31 @@ export default function Settings() {
   }
 
   return (
-    <section>
-      <h2>Settings</h2>
-      {currentPath && <p>Current path: {currentPath}</p>}
-      <form onSubmit={onSubmit}>
-        <label htmlFor="libraryPath">Library Path</label>
-        <input
-          id="libraryPath"
-          type="text"
-          value={path}
-          onChange={(e) => setPath(e.target.value)}
-          placeholder="/mnt/music or \\nas\\share\\music"
-          aria-describedby="libraryPathHelp"
-        />
-        <p id="libraryPathHelp">Use an absolute path accessible to the server.</p>
-        <button type="submit" disabled={saving}>
-          {saving ? 'Saving…' : 'Save'}
-        </button>
-      </form>
-      {success && <p aria-live="polite">{success}</p>}
-      {error && (
-        <p role="alert">{error}</p>
-      )}
-    </section>
+    <div style={{ display: 'grid', gap: '1.5rem' }}>
+      <section>
+        <h2>Settings</h2>
+        {currentPath && <p>Current path: {currentPath}</p>}
+        <form onSubmit={onSubmit}>
+          <label htmlFor="libraryPath">Library Path</label>
+          <input
+            id="libraryPath"
+            type="text"
+            value={path}
+            onChange={(e) => setPath(e.target.value)}
+            placeholder="/mnt/music or \\nas\\share\\music"
+            aria-describedby="libraryPathHelp"
+          />
+          <p id="libraryPathHelp">Use an absolute path accessible to the server.</p>
+          <button type="submit" disabled={saving}>
+            {saving ? 'Saving…' : 'Save'}
+          </button>
+        </form>
+        {success && <p aria-live="polite">{success}</p>}
+        {error && (
+          <p role="alert">{error}</p>
+        )}
+      </section>
+      <ScanPanel />
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 # Heardle Home Edition
 
-Personalized Heardle-style music guessing game that uses your own MP3 library. Players listen to progressively longer snippets and guess the song (title + artist) within 6 attempts.
+Personalized Heardle-style music guessing game that uses your own music library (MP3, M4A, FLAC, and other common formats). Players listen to progressively longer snippets and guess the song (title + artist) within 6 attempts.
 
 ## Overview
 - Backend: .NET 9 Minimal APIs (C#)
@@ -9,10 +9,8 @@ Personalized Heardle-style music guessing game that uses your own MP3 library. P
 - Platform: Mobile-first web app (phone and tablet friendly)
 
 ## Current Status
-- Planning in progress via Agent OS
-- Spec created for Iteration 1: Project Scaffolding
-  - Path: `.agent-os/specs/2025-09-12-project-scaffolding/`
-  - Tasks defined in `tasks.md`
+- Iteration 4 (Scan UI + Progress) complete — backend scan endpoints and frontend progress UI shipped
+- Specs live under `.agent-os/specs/YYYY-MM-DD-slug/` (latest: `.agent-os/specs/2025-09-13-scan-ui-progress/`)
 
 ## Roadmap (Phase 1 Highlights)
 1) Iteration 1: Project Scaffolding — minimal API (`/health`), Vite React app, CORS, mobile baseline
@@ -47,11 +45,15 @@ See full plan: `Planning/Product-Plan.md`
 - Validations: absolute path, exists, readable by the server process
 - Errors: returns a 400 with a code and message for invalid paths
 
-## Library Scan (Iteration 3)
-- Purpose: Index MP3 files under the saved library path
+## Library Scan (Iterations 3–4)
+- Purpose: Index audio files under the saved library path and surface progress to the UI
+- Supported formats: `.mp3`, `.m4a`, `.aac`, `.flac`, `.wav`, `.ogg`, `.wma`, `.aiff`, `.aif`
 - Output: `api/data/library.json` — `[ { id, title, artist, path } ]`
-- Behavior: Recursively enumerates `.mp3`, extracts ID3 via TagLib# (fallback to filename `Artist - Title`), skips unreadable/corrupt files, writes output atomically
-- Notes: Triggering endpoints and progress UI come in Iteration 4
+- Backend endpoints:
+  - `POST /api/library/scan` → starts a scan when the library path is configured; returns `202` with current status or `409` if one is already running
+  - `GET /api/library/status` → returns `{ status, total, indexed, failed, startedAt?, finishedAt? }`
+- Frontend: Settings page now includes a "Scan Now" panel that triggers scans, polls every 750 ms while running, shows live counts, and reports conflicts/errors
+- Behavior: Recursively enumerates supported formats, extracts metadata via TagLib# (fallback to filename `Artist - Title`), skips unreadable/corrupt files, writes output atomically
 
 ## Mobile UX Baseline
 - Viewport meta configured for mobile

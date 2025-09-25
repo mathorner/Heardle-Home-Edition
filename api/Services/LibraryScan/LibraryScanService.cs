@@ -1,7 +1,7 @@
 namespace Api.LibraryScan;
 
 /// <summary>
-/// Orchestrates a full library scan: enumerates MP3 files under the configured
+/// Orchestrates a full library scan: enumerates audio files under the configured
 /// library path, extracts metadata via <see cref="ITrackMetadataExtractor"/>,
 /// generates deterministic IDs, and persists the resulting index via <see cref="IIndexWriter"/>.
 /// Continues past per-file errors and logs a completion summary.
@@ -55,7 +55,7 @@ public class LibraryScanService : ILibraryScanService
         var failed = 0;
         var list = new List<TrackRecord>(capacity: 1024);
 
-        foreach (var file in ScanHelpers.EnumerateMp3Files(root))
+        foreach (var file in ScanHelpers.EnumerateAudioFiles(root))
         {
             ct.ThrowIfCancellationRequested();
             total++;

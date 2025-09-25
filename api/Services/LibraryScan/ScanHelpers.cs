@@ -11,6 +11,9 @@ namespace Api.LibraryScan;
 public static class ScanHelpers
 {
     private static readonly Regex MultiSpace = new(@"\s+", RegexOptions.Compiled);
+    private static readonly HashSet<string> SupportedAudioExtensions = new(
+        new[] { ".mp3", ".m4a", ".aac", ".flac", ".wav", ".ogg", ".wma", ".aiff", ".aif" },
+        StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Trim and collapse all whitespace (including tabs/newlines) into single spaces.
@@ -54,11 +57,12 @@ public static class ScanHelpers
     }
 
     /// <summary>
-    /// Depth-first streaming directory enumeration that yields only .mp3 files (case-insensitive)
-    /// and best-effort skips of hidden/system directories. Swallows per-directory exceptions to
-    /// keep progressing through large/partially inaccessible trees.
+    /// Depth-first streaming directory enumeration that yields supported audio files
+    /// (case-insensitive) and best-effort skips of hidden/system directories. Swallows
+    /// per-directory exceptions to keep progressing through large/partially
+    /// inaccessible trees.
     /// </summary>
-    public static IEnumerable<string> EnumerateMp3Files(string root)
+    public static IEnumerable<string> EnumerateAudioFiles(string root)
     {
         var stack = new Stack<string>();
         stack.Push(root);
@@ -104,7 +108,8 @@ public static class ScanHelpers
 
             foreach (var f in files)
             {
-                if (string.Equals(Path.GetExtension(f), ".mp3", StringComparison.OrdinalIgnoreCase))
+                var extension = Path.GetExtension(f);
+                if (extension is { Length: > 0 } && SupportedAudioExtensions.Contains(extension))
                 {
                     yield return f;
                 }
