@@ -148,11 +148,11 @@ Heardle Home Edition is a music guessing game that uses the player's personal mu
 #### Iteration 4: Scan UI + Progress
 - **Goal**: Trigger scan and view progress
 - **Deliverables**: 
-  - [ ] POST `/api/library/scan`
-  - [ ] GET `/api/library/status`
-  - [ ] Frontend "Scan Now" button
-  - [ ] Progress indicator
-  - [ ] Final track count display
+  - [x] POST `/api/library/scan`
+  - [x] GET `/api/library/status`
+  - [x] Frontend "Scan Now" button
+  - [x] Progress indicator
+  - [x] Final track count display
 - **Acceptance**: User sees live progress updates and final totals; UI remains usable on phone (one-column) and tablet (two-column optional)
 
 #### Iteration 5: Random Track + Game Session

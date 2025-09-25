@@ -1,4 +1,5 @@
 using Api.LibraryScan;
+using Api.Endpoints;
 var builder = WebApplication.CreateBuilder(args);
 
 // Logging configuration
@@ -19,6 +20,7 @@ builder.Services.AddSingleton<ISettingsService, SettingsService>();
 builder.Services.AddSingleton<ITrackMetadataExtractor, TagLibMetadataExtractor>();
 builder.Services.AddSingleton<IIndexWriter, JsonIndexWriter>();
 builder.Services.AddSingleton<ILibraryScanService, LibraryScanService>();
+builder.Services.AddSingleton<IScanManager, ScanManager>();
 
 var app = builder.Build();
 
@@ -37,6 +39,7 @@ app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
 // Endpoints
 app.MapSettingsEndpoints();
+app.MapLibraryEndpoints();
 
 app.Run();
 

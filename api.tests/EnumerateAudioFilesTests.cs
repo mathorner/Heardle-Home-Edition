@@ -2,10 +2,10 @@ using Api.LibraryScan;
 
 namespace Api.Tests;
 
-public class EnumerateMp3FilesTests
+public class EnumerateAudioFilesTests
 {
     [Fact]
-    public void EnumeratesOnlyMp3sRecursively()
+    public void EnumeratesSupportedAudioFilesRecursively()
     {
         var root = Directory.CreateTempSubdirectory();
         try
@@ -17,10 +17,16 @@ public class EnumerateMp3FilesTests
             File.WriteAllText(Path.Combine(d1.FullName, "note.txt"), "");
             File.WriteAllText(Path.Combine(d2.FullName, "song.mp3"), "");
 
-            var files = ScanHelpers.EnumerateMp3Files(root.FullName).ToArray();
+            // Additional supported formats
+            File.WriteAllText(Path.Combine(d1.FullName, "bonus.flac"), "");
+            File.WriteAllText(Path.Combine(d2.FullName, "alt.m4a"), "");
+
+            var files = ScanHelpers.EnumerateAudioFiles(root.FullName).ToArray();
             Assert.Contains(Path.Combine(root.FullName, "root.mp3"), files);
             Assert.Contains(Path.Combine(d1.FullName, "track1.MP3"), files);
             Assert.Contains(Path.Combine(d2.FullName, "song.mp3"), files);
+            Assert.Contains(Path.Combine(d1.FullName, "bonus.flac"), files);
+            Assert.Contains(Path.Combine(d2.FullName, "alt.m4a"), files);
             Assert.DoesNotContain(Path.Combine(d1.FullName, "note.txt"), files);
         }
         finally
@@ -29,4 +35,3 @@ public class EnumerateMp3FilesTests
         }
     }
 }
-
