@@ -18,12 +18,12 @@
   - [x] 3.3 Implement endpoint handlers, DTOs, and wiring in `Program` with structured error responses and `Location` header
   - [x] 3.4 Verify all tests pass
 
-- [ ] 4. Frontend game client and Play view
-  - [ ] 4.1 Write unit tests for `gameClient` (start success/errors, get session success/404)
-  - [ ] 4.2 Write component tests for `Game` view (start flow, resume existing game, error handling, storage clearing)
-  - [ ] 4.3 Implement `gameClient.ts`, new `Game` component, navigation updates, and sessionStorage integration
-  - [ ] 4.4 Ensure mobile-first layout, accessibility messaging, and actionable error prompts
-  - [ ] 4.5 Verify all tests pass
+- [x] 4. Frontend game client and Play view
+  - [x] 4.1 Write unit tests for `gameClient` (start success/errors, get session success/404)
+  - [x] 4.2 Write component tests for `Game` view (start flow, resume existing game, error handling, storage clearing)
+  - [x] 4.3 Implement `gameClient.ts`, new `Game` component, navigation updates, and sessionStorage integration
+  - [x] 4.4 Ensure mobile-first layout, accessibility messaging, and actionable error prompts
+  - [x] 4.5 Verify all tests pass
 
 - [ ] 5. Integration polish and documentation
   - [ ] 5.1 Plumb provider invalidation after scan completion and add any necessary telemetry/logging tweaks
