@@ -1,7 +1,8 @@
-using Api.LibraryIndex;
-using Api.LibraryScan;
 using Api.Endpoints;
 using Api.Game;
+using Api.LibraryIndex;
+using Api.LibraryScan;
+using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Logging configuration
@@ -25,6 +26,18 @@ builder.Services.AddSingleton<ILibraryIndexProvider, LibraryIndexProvider>();
 builder.Services.AddSingleton<ILibraryScanService, LibraryScanService>();
 builder.Services.AddSingleton<IScanManager, ScanManager>();
 builder.Services.AddSingleton<IGameSessionStore, InMemoryGameSessionStore>();
+builder.Services.AddSingleton<IRandomTrackSelector, RandomTrackSelector>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Heardle Home Edition API",
+        Version = "v1",
+        Description = "Backend endpoints powering the Heardle Home Edition experience."
+    });
+});
 
 var app = builder.Build();
 
@@ -39,11 +52,18 @@ else
     app.UseHttpsRedirection();
 }
 
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Heardle Home Edition API v1");
+});
+
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
 // Endpoints
 app.MapSettingsEndpoints();
 app.MapLibraryEndpoints();
+app.MapGameEndpoints();
 
 app.Run();
 

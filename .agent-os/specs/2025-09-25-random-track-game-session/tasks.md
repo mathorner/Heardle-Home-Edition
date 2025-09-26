@@ -12,11 +12,11 @@
   - [x] 2.3 Add logging hooks for creation and cleanup events
   - [x] 2.4 Verify all tests pass
 
-- [ ] 3. Game API endpoints
-  - [ ] 3.1 Write integration tests for POST `/game/start` covering success, LibraryNotReady (503), and NoTracksIndexed (409)
-  - [ ] 3.2 Write tests for GET `/game/{id}` covering success, invalid GUID (400), and missing session (404)
-  - [ ] 3.3 Implement endpoint handlers, DTOs, and wiring in `Program` with structured error responses and `Location` header
-  - [ ] 3.4 Verify all tests pass
+- [x] 3. Game API endpoints
+  - [x] 3.1 Write integration tests for POST `/game/start` covering success, LibraryNotReady (503), and NoTracksIndexed (409)
+  - [x] 3.2 Write tests for GET `/game/{id}` covering success, invalid GUID (400), and missing session (404)
+  - [x] 3.3 Implement endpoint handlers, DTOs, and wiring in `Program` with structured error responses and `Location` header
+  - [x] 3.4 Verify all tests pass
 
 - [ ] 4. Frontend game client and Play view
   - [ ] 4.1 Write unit tests for `gameClient` (start success/errors, get session success/404)
