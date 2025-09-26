@@ -1,6 +1,7 @@
 using Api.LibraryIndex;
 using Api.LibraryScan;
 using Api.Endpoints;
+using Api.Game;
 var builder = WebApplication.CreateBuilder(args);
 
 // Logging configuration
@@ -23,6 +24,7 @@ builder.Services.AddSingleton<IIndexWriter, JsonIndexWriter>();
 builder.Services.AddSingleton<ILibraryIndexProvider, LibraryIndexProvider>();
 builder.Services.AddSingleton<ILibraryScanService, LibraryScanService>();
 builder.Services.AddSingleton<IScanManager, ScanManager>();
+builder.Services.AddSingleton<IGameSessionStore, InMemoryGameSessionStore>();
 
 var app = builder.Build();
 

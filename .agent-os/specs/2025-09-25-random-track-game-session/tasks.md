@@ -6,11 +6,11 @@
   - [x] 1.3 Wire provider into DI and invalidate cache from `LibraryScanService` after writes
   - [x] 1.4 Verify all tests pass
 
-- [ ] 2. Game session store
-  - [ ] 2.1 Write tests for in-memory session store creation, retrieval, mutation hook, and expiry sweep
-  - [ ] 2.2 Implement `IGameSessionStore` with thread-safe storage and expiration handling
-  - [ ] 2.3 Add logging hooks for creation and cleanup events
-  - [ ] 2.4 Verify all tests pass
+- [x] 2. Game session store
+  - [x] 2.1 Write tests for in-memory session store creation, retrieval, mutation hook, and expiry sweep
+  - [x] 2.2 Implement `IGameSessionStore` with thread-safe storage and expiration handling
+  - [x] 2.3 Add logging hooks for creation and cleanup events
+  - [x] 2.4 Verify all tests pass
 
 - [ ] 3. Game API endpoints
   - [ ] 3.1 Write integration tests for POST `/game/start` covering success, LibraryNotReady (503), and NoTracksIndexed (409)

@@ -1,6 +1,5 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Linq;
 
 /// <summary>
 /// Handles validation and persistence of application settings that live on the server.

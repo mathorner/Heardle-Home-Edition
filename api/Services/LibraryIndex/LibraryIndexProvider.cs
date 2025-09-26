@@ -1,7 +1,5 @@
 using System.Text.Json;
 using Api.LibraryScan;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Api.LibraryIndex;
 
