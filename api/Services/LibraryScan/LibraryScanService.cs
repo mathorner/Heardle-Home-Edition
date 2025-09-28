@@ -1,3 +1,5 @@
+using Api.LibraryIndex;
+
 namespace Api.LibraryScan;
 
 /// <summary>
@@ -21,6 +23,7 @@ public class LibraryScanService : ILibraryScanService
     private readonly ISettingsService _settings;
     private readonly ITrackMetadataExtractor _extractor;
     private readonly IIndexWriter _writer;
+    private readonly ILibraryIndexProvider _indexProvider;
     private readonly ILogger<LibraryScanService> _logger;
 
     public LibraryScanService(
@@ -28,12 +31,14 @@ public class LibraryScanService : ILibraryScanService
         ISettingsService settings,
         ITrackMetadataExtractor extractor,
         IIndexWriter writer,
+        ILibraryIndexProvider indexProvider,
         ILogger<LibraryScanService> logger)
     {
         _env = env;
         _settings = settings;
         _extractor = extractor;
         _writer = writer;
+        _indexProvider = indexProvider;
         _logger = logger;
     }
 
@@ -81,6 +86,7 @@ public class LibraryScanService : ILibraryScanService
         });
 
         await _writer.WriteAsync(list, _env, ct);
+        _indexProvider.Invalidate();
         _logger.LogInformation("Scan completed. Total: {Total}, Indexed: {Indexed}, Failed: {Failed}", total, indexed, failed);
         return (total, indexed, failed);
     }

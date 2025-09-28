@@ -1,5 +1,3 @@
-using TagLib;
-
 namespace Api.LibraryScan;
 
 /// <summary>

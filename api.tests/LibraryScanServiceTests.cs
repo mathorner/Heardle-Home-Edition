@@ -1,3 +1,4 @@
+using Api.LibraryIndex;
 using Api.LibraryScan;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Hosting;
@@ -44,6 +45,16 @@ public class LibraryScanServiceTests
         }
     }
 
+    private sealed class StubIndexProvider : ILibraryIndexProvider
+    {
+        public int InvalidateCount { get; private set; }
+
+        public Task<LibraryIndexSnapshot> GetAsync(CancellationToken ct = default) =>
+            Task.FromResult(new LibraryIndexSnapshot(LibraryIndexStatus.NotReady, Array.Empty<TrackRecord>(), 0, null, null, null));
+
+        public void Invalidate() => InvalidateCount++;
+    }
+
     [Fact]
     public async Task ScanProducesRecordsAndWritesIndex()
     {
@@ -57,8 +68,9 @@ public class LibraryScanServiceTests
             var settings = new FakeSettings(root.FullName);
             var extractor = new FakeExtractor();
             var writer = new CollectingWriter();
+            var indexProvider = new StubIndexProvider();
             var logger = Microsoft.Extensions.Logging.Abstractions.NullLogger<LibraryScanService>.Instance;
-            var svc = new LibraryScanService(env, settings, extractor, writer, logger);
+            var svc = new LibraryScanService(env, settings, extractor, writer, indexProvider, logger);
 
             var (total, indexed, failed) = await svc.ScanAsync();
             Assert.Equal(1, indexed);
@@ -66,6 +78,7 @@ public class LibraryScanServiceTests
             Assert.True(File.Exists(Path.Combine(root.FullName, "data", "library.json")));
             Assert.Single(writer.Written);
             Assert.Equal("a.mp3", Path.GetFileName(writer.Written[0].Path));
+            Assert.Equal(1, indexProvider.InvalidateCount);
         }
         finally
         {
