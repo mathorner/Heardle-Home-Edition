@@ -9,8 +9,8 @@ Personalized Heardle-style music guessing game that uses your own music library 
 - Platform: Mobile-first web app (phone and tablet friendly)
 
 ## Current Status
-- Iteration 4 (Scan UI + Progress) complete — backend scan endpoints and frontend progress UI shipped
-- Specs live under `.agent-os/specs/YYYY-MM-DD-slug/` (latest: `.agent-os/specs/2025-09-13-scan-ui-progress/`)
+- Iteration 5 (Random Track + Game Session) active — backend game session endpoints, random track selection, Swagger docs, and frontend Play view delivered
+- Latest spec: `.agent-os/specs/2025-09-25-random-track-game-session/`
 
 ## Roadmap (Phase 1 Highlights)
 1) Iteration 1: Project Scaffolding — minimal API (`/health`), Vite React app, CORS, mobile baseline
@@ -54,6 +54,18 @@ See full plan: `Planning/Product-Plan.md`
   - `GET /api/library/status` → returns `{ status, total, indexed, failed, startedAt?, finishedAt? }`
 - Frontend: Settings page now includes a "Scan Now" panel that triggers scans, polls every 750 ms while running, shows live counts, and reports conflicts/errors
 - Behavior: Recursively enumerates supported formats, extracts metadata via TagLib# (fallback to filename `Artist - Title`), skips unreadable/corrupt files, writes output atomically
+
+## Game Session (Iteration 5)
+- Backend endpoints:
+  - `POST /api/game/start` → selects a random indexed track, creates a session, returns `{ gameId, status, attempt, maxAttempts, createdAt }`; 503 when the index is missing, 409 when empty
+  - `GET /api/game/{id}` → returns the active session snapshot or 404 when missing
+- Session storage: In-memory cache with automatic expiry after 2 hours; cache invalidates when scans rebuild the library index
+- Random selection avoids repeating the previous track when possible
+- Frontend Play view (default tab) starts/resumes games, stores `gameId` in sessionStorage, and surfaces actionable errors pointing back to Settings → Scan
+
+## API Explorer (Swagger)
+- Run `cd api && dotnet run`
+- Open `http://localhost:5158/swagger` to browse the OpenAPI UI generated via Swashbuckle
 
 ## Mobile UX Baseline
 - Viewport meta configured for mobile

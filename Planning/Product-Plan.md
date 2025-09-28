@@ -158,8 +158,8 @@ Heardle Home Edition is a music guessing game that uses the player's personal mu
 #### Iteration 5: Random Track + Game Session
 - **Goal**: Start a game with a random pick
 - **Deliverables**: 
-  - [ ] POST `/api/game/start` returns `{ gameId, attempt: 1 }`
-  - [ ] In-memory session storing `trackId`, attempts, and status (`active|won|lost`)
+  - [x] POST `/api/game/start` returns `{ gameId, attempt: 1 }`
+  - [x] In-memory session storing `trackId`, attempts, and status (`active|won|lost`)
 - **Acceptance**: Always returns a valid `gameId`; session is stored; no audio yet
 
 #### Iteration 6: Audio Streaming (Full Track)

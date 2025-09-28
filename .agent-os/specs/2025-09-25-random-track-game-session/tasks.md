@@ -25,8 +25,8 @@
   - [x] 4.4 Ensure mobile-first layout, accessibility messaging, and actionable error prompts
   - [x] 4.5 Verify all tests pass
 
-- [ ] 5. Integration polish and documentation
-  - [ ] 5.1 Plumb provider invalidation after scan completion and add any necessary telemetry/logging tweaks
-  - [ ] 5.2 Update README and Product Plan with Iteration 5 status and new endpoints/flow
-  - [ ] 5.3 Run full test suites (`dotnet test`, `npm test -- --run`)
-  - [ ] 5.4 Verify all tests pass
+- [x] 5. Integration polish and documentation
+  - [x] 5.1 Plumb provider invalidation after scan completion and add any necessary telemetry/logging tweaks
+  - [x] 5.2 Update README and Product Plan with Iteration 5 status and new endpoints/flow
+  - [x] 5.3 Run full test suites (`dotnet test`, `npm test -- --run`)
+  - [x] 5.4 Verify all tests pass
