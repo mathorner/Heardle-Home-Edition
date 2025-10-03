@@ -31,6 +31,7 @@ See full plan: `Planning/Product-Plan.md`
 - Tests
   - Backend: `dotnet test`
   - Frontend: `cd frontend && npm test -- --run`
+  - Frontend e2e: `cd frontend && npm run test:e2e` (install browsers once with `npx playwright install`)
 
 ### Ports and Proxy
 - Vite dev server runs at `http://localhost:5173`.
